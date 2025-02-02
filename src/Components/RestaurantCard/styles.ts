@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 export const Illustration = styled.img`
   display: block;
   width: 100%;
+  height: 217px;
+  object-fit: cover;
 `
 export const TagContainer = styled.div`
   position: absolute;
@@ -18,6 +20,7 @@ export const TagContainer = styled.div`
 export const Infos = styled.div`
   padding: 8px;
   color: ${cores.pink};
+  position: relative;
 `
 
 export const TitleContainer = styled.div`
@@ -46,6 +49,8 @@ export const Descricao = styled.p`
   font-size: 14px;
   line-height: 22px;
   padding-bottom: 16px;
+  height: 88px;
+  overflow-y: hidden;
 `
 export const Btn = styled(Link)`
   height: 24px;
@@ -58,4 +63,8 @@ export const Btn = styled(Link)`
   border: none;
   text-decoration: none;
   padding: 4px;
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  text-align: center;
 `

@@ -1,10 +1,16 @@
 import { Banner, BannerContainer, RestaurantTitle, Tag } from './styles'
 
-const ProfileBanner = () => (
-  <Banner>
+export type Props = {
+  capa: string
+  tipo: string
+  titulo: string
+}
+
+const ProfileBanner = ({ capa, tipo, titulo }: Props) => (
+  <Banner capa={capa}>
     <BannerContainer>
-      <Tag>Italiana</Tag>
-      <RestaurantTitle>La Dolce Vita Trattoria</RestaurantTitle>
+      <Tag>{tipo}</Tag>
+      <RestaurantTitle>{titulo}</RestaurantTitle>
     </BannerContainer>
   </Banner>
 )
