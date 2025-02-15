@@ -1,12 +1,16 @@
 import styled from 'styled-components'
-import { cores } from '../../styles'
+import { breakpoints, cores } from '../../styles'
 import { Link } from 'react-router-dom'
 
 export const Illustration = styled.img`
   display: block;
   width: 100%;
-  height: 217px;
+  max-height: 217px;
   object-fit: cover;
+
+  @media (max-width: ${breakpoints.dextop}) {
+    max-height: 271px;
+  }
 `
 export const TagContainer = styled.div`
   position: absolute;

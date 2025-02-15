@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { cores } from '../../styles'
+import { breakpoints, cores } from '../../styles'
 
 export const MenuContainer = styled.div`
   height: 342px;
@@ -49,11 +49,31 @@ export const ModalContainer = styled.div`
   top: 25vh;
   padding: 32px;
   z-index: 3;
+
+  @media (max-width: ${breakpoints.dextop}) {
+    max-width: 90%;
+    height: 480px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media (max-width: ${breakpoints.tablet}) {
+    max-width: 70%;
+    height: 480px;
+    flex-direction: column;
+    align-items: center;
+    top: 40vh;
+  }
 `
 export const ModalImage = styled.img`
   height: 280px;
   width: 280px;
   object-fit: cover;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    height: 200px;
+    width: 200px;
+  }
 `
 
 export const ModalInfos = styled.div`
@@ -68,6 +88,11 @@ export const ModalTitle = styled.h3`
   font-size: 18px;
   font-weight: 900;
   margin-bottom: 16px;
+
+  @media (max-width: ${breakpoints.dextop}) {
+    width: 100%;
+    text-align: center;
+  }
 `
 export const ModalDescription = styled.p`
   background-color: transparent;
@@ -82,11 +107,16 @@ export const ModalBtn = styled.button`
   height: 24px;
   font-size: 14px;
   font-weight: 700;
-  text.align: center;
+  text-align: center;
   padding: 4px 8px;
   border: none;
   display: inline-block;
   width: fit-content;
+  cursor: pointer;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    width: 100%;
+  }
 `
 export const Overlay = styled.div`
   height: 100%;
@@ -106,4 +136,5 @@ export const Close = styled.img`
   top: 8px;
   right: 8px;
   background-color: transparent;
+  cursor: pointer;
 `

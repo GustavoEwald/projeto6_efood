@@ -9,14 +9,7 @@ type Props = {
 const MenuList = ({ menu }: Props) => (
   <Container>
     {menu.map((menuItem) => (
-      <MenuCard
-        image={menuItem.foto}
-        menu={menuItem.nome}
-        description={menuItem.descricao}
-        key={menuItem.id}
-        porcao={menuItem.porcao}
-        preco={menuItem.preco}
-      />
+      <MenuCard key={menuItem.id} menu={menuItem} />
     ))}
   </Container>
 )

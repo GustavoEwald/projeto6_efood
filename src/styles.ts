@@ -8,6 +8,11 @@ export const cores = {
   white: '#fff'
 }
 
+export const breakpoints = {
+  dextop: '1024px',
+  tablet: '768px'
+}
+
 export const GlobalCss = createGlobalStyle`
   *{
     box-sizing: border-box;
@@ -22,6 +27,16 @@ export const ContainerCard = styled.div`
   height: 399px;
   border: 1px solid ${cores.pink};
   position: relative;
+
+  @media (max-width: ${breakpoints.dextop}) {
+    width: 590px;
+    height: 499px;
+  }
+
+  @media (max-width: ${breakpoints.tablet}) {
+    width: 80%;
+    height: 450px;
+  }
 `
 export const Logo = styled.img`
   width: 125px;

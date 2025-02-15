@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { cores } from '../../styles'
+import { breakpoints, cores } from '../../styles'
 import { Props } from '.'
 
 export const Banner = styled.div<Omit<Props, 'tipo' | 'titulo'>>`
@@ -31,6 +31,10 @@ export const BannerContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   padding: 25px 0 32px 0;
+  padding-left: 16px;
+
+  @media (max-width: ${breakpoints.tablet}) {
+  }
 
   h2 {
     color: ${cores.white};
