@@ -1,19 +1,14 @@
 import { useState } from 'react'
-import * as S from './styles'
-import close_icon from '../../Assets/Images/close_icon.png'
 import { useDispatch } from 'react-redux'
+
 import { add } from '../../store/reducers/cart'
-import { Menu } from '../../Pages/Home'
+import PriceFormat from '../../utils'
+
+import close_icon from '../../Assets/Images/close_icon.png'
+import * as S from './styles'
 
 type Props = {
   menu: Menu
-}
-
-export const formataPreco = (preco = 0) => {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  }).format(preco)
 }
 
 const MenuCard = ({ menu }: Props) => {
@@ -28,7 +23,7 @@ const MenuCard = ({ menu }: Props) => {
     return `${menu.descricao.slice(0, 153)}...`
   }
 
-  function adicionaItem() {
+  function addItem() {
     dispatch(add(menu))
     modalVisibility()
   }
@@ -53,8 +48,8 @@ const MenuCard = ({ menu }: Props) => {
                 <br />
                 {`Serve: de ${menu.porcao}`}
               </S.ModalDescription>
-              <S.ModalBtn onClick={adicionaItem}>
-                Adicionar ao carrinho - {formataPreco(menu.preco)}
+              <S.ModalBtn onClick={addItem}>
+                Adicionar ao carrinho - {PriceFormat(menu.preco)}
               </S.ModalBtn>
             </S.ModalInfos>
             <S.Close onClick={modalVisibility} src={close_icon} alt="" />

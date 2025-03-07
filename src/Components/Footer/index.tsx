@@ -2,8 +2,9 @@ import logo from '../../Assets/Images/logo.svg'
 import instagram from '../../Assets/Images/instagram.png'
 import facebook from '../../Assets/Images/facebook.png'
 import twitter from '../../Assets/Images/twitter.png'
-import * as S from './styles'
 import { Logo } from '../../styles'
+
+import * as S from './styles'
 
 const Footer = () => (
   <S.Container>
@@ -22,7 +23,7 @@ const Footer = () => (
     <S.Disclaimer>
       A efood é uma plataforma para divulgação de estabelecimentos, a
       responsabilidade pela entrega, qualidade dos produtos é toda do
-      estabelecimento contratado.{' '}
+      estabelecimento contratado.
     </S.Disclaimer>
   </S.Container>
 )

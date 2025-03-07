@@ -1,4 +1,4 @@
-import { Banner, BannerContainer, RestaurantTitle, Tag } from './styles'
+import * as S from './styles'
 
 export type Props = {
   capa: string
@@ -7,11 +7,11 @@ export type Props = {
 }
 
 const ProfileBanner = ({ capa, tipo, titulo }: Props) => (
-  <Banner capa={capa}>
-    <BannerContainer>
-      <Tag>{tipo}</Tag>
-      <RestaurantTitle>{titulo}</RestaurantTitle>
-    </BannerContainer>
-  </Banner>
+  <S.Banner capa={capa}>
+    <S.BannerContainer>
+      <S.Tag>{tipo}</S.Tag>
+      <S.RestaurantTitle>{titulo}</S.RestaurantTitle>
+    </S.BannerContainer>
+  </S.Banner>
 )
 export default ProfileBanner

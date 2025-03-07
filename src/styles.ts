@@ -1,7 +1,8 @@
 import styled, { createGlobalStyle } from 'styled-components'
 
-export const cores = {
+export const colors = {
   pink: '#E66767',
+  lightPink: 'rgb(226, 151, 151)',
   lightText: '#FFEBD9',
   menuText: 'rgba(255, 235, 217, 1)',
   background: '#FFF8F2',
@@ -19,13 +20,13 @@ export const GlobalCss = createGlobalStyle`
     margin: 0;
     padding: 0;
     font-family: Roboto, sans-serif;
-    background-color: ${cores.background};
+    background-color: ${colors.background};
   }
 `
 export const ContainerCard = styled.div`
   width: 472px;
   height: 399px;
-  border: 1px solid ${cores.pink};
+  border: 1px solid ${colors.pink};
   position: relative;
 
   @media (max-width: ${breakpoints.dextop}) {

@@ -1,16 +1,8 @@
+import Tags from '../Tags'
+
 import estrela from '../../Assets/Images/estrela.png'
 import { ContainerCard } from '../../styles'
-import Tags from '../Tags'
-import {
-  Btn,
-  Descricao,
-  Illustration,
-  Infos,
-  NomeRestaurante,
-  Rating,
-  TagContainer,
-  TitleContainer
-} from './styles'
+import * as S from './styles'
 
 type Props = {
   image: string
@@ -39,26 +31,31 @@ const Card = ({
 
   return (
     <ContainerCard>
-      <Illustration
+      <S.Illustration
         src={image}
         alt={`Ambiente do restaurante ${restaurantName}`}
       />
-      <TagContainer>
+      <S.TagContainer>
         {tags.map((tagTitle) => (
           <Tags key={tagTitle} tagTitle={tagTitle} />
         ))}
-      </TagContainer>
-      <Infos>
-        <TitleContainer>
-          <NomeRestaurante>{restaurantName}</NomeRestaurante>
-          <Rating>
+      </S.TagContainer>
+      <S.Infos>
+        <S.TitleContainer>
+          <h3>{restaurantName}</h3>
+          <S.Rating>
             <p>{rating}</p>
             <img src={estrela} alt="estrelas" />
-          </Rating>
-        </TitleContainer>
-        <Descricao>{returnDescription()}</Descricao>
-      </Infos>
-      <Btn to={`/Perfil/${id}`}>Saiba mais</Btn>
+          </S.Rating>
+        </S.TitleContainer>
+        <S.Description>{returnDescription()}</S.Description>
+      </S.Infos>
+      <S.Btn
+        title="Clique para acessar o Menu deste restaurante"
+        to={`/Profile/${id}`}
+      >
+        Saiba mais
+      </S.Btn>
     </ContainerCard>
   )
 }

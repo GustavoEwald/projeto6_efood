@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { breakpoints, cores } from '../../styles'
+import { breakpoints, colors } from '../../styles'
 import { Link } from 'react-router-dom'
 
 export const Illustration = styled.img`
@@ -23,7 +23,7 @@ export const TagContainer = styled.div`
 
 export const Infos = styled.div`
   padding: 8px;
-  color: ${cores.pink};
+  color: ${colors.pink};
   position: relative;
 `
 
@@ -47,9 +47,7 @@ export const Rating = styled.div`
   align-items: center;
 `
 
-export const NomeRestaurante = styled.h3``
-
-export const Descricao = styled.p`
+export const Description = styled.p`
   font-size: 14px;
   line-height: 22px;
   padding-bottom: 16px;
@@ -59,8 +57,8 @@ export const Descricao = styled.p`
 export const Btn = styled(Link)`
   height: 24px;
   width: 82px;
-  background-color: ${cores.pink};
-  color: ${cores.lightText};
+  background-color: ${colors.pink};
+  color: ${colors.lightText};
   font-size: 14px;
   font-weight: bold;
   line-height: 16px;

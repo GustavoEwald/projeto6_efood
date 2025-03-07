@@ -1,6 +1,6 @@
 import MenuCard from '../MenuCard'
+
 import { Container } from './styles'
-import { Menu } from '../../Pages/Home'
 
 type Props = {
   menu: Menu[]

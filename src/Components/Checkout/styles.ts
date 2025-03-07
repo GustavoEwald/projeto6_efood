@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { cores } from '../../styles'
+import { colors } from '../../styles'
 import { Props } from '.'
 
 export const CheckoutContainer = styled.form`
@@ -27,7 +27,7 @@ export const Sidebar = styled.div`
   width: 360px;
   height: 100%;
   padding: 32px 8px;
-  background-color: ${cores.pink};
+  background-color: ${colors.pink};
   font-size: 14px;
   font-weight: 700;
   z-index: 3;
@@ -37,7 +37,11 @@ export const Sidebar = styled.div`
     outline: none;
     border: none;
     height: 32px;
-    background-color: ${cores.lightText};
+    background-color: ${colors.lightText};
+
+    &.error {
+      border: 2px solid red;
+    }
   }
 
   label {
@@ -45,18 +49,18 @@ export const Sidebar = styled.div`
   }
 
   .title {
-    background-color: ${cores.pink};
-    color: ${cores.lightText};
+    background-color: ${colors.pink};
+    color: ${colors.lightText};
     margin-bottom: 16px;
     font-size: 16px;
 
     span {
-      background-color: ${cores.pink};
+      background-color: ${colors.pink};
     }
   }
   p {
     background-color: transparent;
-    color: ${cores.lightText};
+    color: ${colors.lightText};
     line-height: 22px;
     font-weight: 400;
     margin-bottom: 24px;
@@ -71,7 +75,7 @@ export const InfoContainer = styled.div<Omit<Props, 'margin'>>`
   align-items: space-between;
   gap: 8px;
   background-color: transparent;
-  color: ${cores.lightText};
+  color: ${colors.lightText};
   overflow-y: hidden;
 `
 
@@ -83,7 +87,7 @@ export const Btn = styled.button<Omit<Props, 'flexOrientation'>>`
   height: 24px;
   font-size: 14px;
   font-weight: 700;
-  color: ${cores.pink};
+  color: ${colors.pink};
   text-align: center;
   margin-top: ${(Props) => (Props.margin === true ? '24px' : '0')};
   cursor: pointer;

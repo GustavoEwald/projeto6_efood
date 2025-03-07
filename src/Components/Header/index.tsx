@@ -1,14 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { open } from '../../store/reducers/cart'
-import { RootReducer } from '../../store'
-import efoodLogo from '../../Assets/Images/logo.svg'
 import { TiShoppingCart } from 'react-icons/ti'
 import { IoArrowBack } from 'react-icons/io5'
-import * as S from './styles'
+
+import { RootReducer } from '../../store'
+import { open } from '../../store/reducers/cart'
+
+import efoodLogo from '../../Assets/Images/logo.svg'
 import { Logo } from '../../styles'
+import * as S from './styles'
 
 export type Props = {
-  size: 'home' | 'perfil'
+  size: 'home' | 'profile'
 }
 
 const Header = ({ size }: Props) => {
@@ -21,16 +23,19 @@ const Header = ({ size }: Props) => {
 
   return (
     <>
-      <S.HeaderContainerListagem size={size}>
+      <S.HeaderContainerHome size={size}>
         <Logo src={efoodLogo} alt="Logo efood" />
         <S.Subtitle>
           Viva experiências gastronômicas no conforto da sua casa
         </S.Subtitle>
-      </S.HeaderContainerListagem>
+      </S.HeaderContainerHome>
 
-      <S.HeaderContainerPerfil size={size}>
-        <S.PerfilNav>
-          <S.RestaurantsLink to={'/'}>
+      <S.HeaderContainerProfile size={size}>
+        <S.ProfileNav>
+          <S.RestaurantsLink
+            title="Clique para voltar à página de restaurantes"
+            to={'/'}
+          >
             <span className="display-large">Restaurantes</span>
             <span className="display-phone">
               <IoArrowBack className="returnPage" />
@@ -44,8 +49,8 @@ const Header = ({ size }: Props) => {
               <TiShoppingCart className="shop-cart" />
             </div>
           </S.ShoppingContainer>
-        </S.PerfilNav>
-      </S.HeaderContainerPerfil>
+        </S.ProfileNav>
+      </S.HeaderContainerProfile>
     </>
   )
 }

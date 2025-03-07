@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import { DeliveryData } from '../../Components/Checkout'
 
 type DeliveryState = {

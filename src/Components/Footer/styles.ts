@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import footerBackground from '../../Assets/Images/headerFooter_background.png'
-import { cores } from '../../styles'
+import { colors } from '../../styles'
 
 export const Container = styled.footer`
   height: 298px;
@@ -26,10 +26,10 @@ export const SocialIcon = styled.img`
 
 export const Disclaimer = styled.p`
   background-color: transparent;
-  width: 480px;
+  max-width: 480px;
   margin: 0 auto;
   font-size: 10px;
   line-height: 12px;
   text-align: center;
-  color: ${cores.pink};
+  color: ${colors.pink};
 `

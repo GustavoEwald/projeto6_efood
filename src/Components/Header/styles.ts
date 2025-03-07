@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 import banner_background from '../../Assets/Images/headerFooter_background.png'
-import { breakpoints, cores } from '../../styles'
+import { breakpoints, colors } from '../../styles'
 import { Props } from '.'
 import { Link } from 'react-router-dom'
 
-export const HeaderContainerListagem = styled.div<Props>`
+export const HeaderContainerHome = styled.div<Props>`
   background-image: url(${banner_background});
   height: 360px;
   width: 100%;
@@ -27,7 +27,7 @@ export const Subtitle = styled.h2`
   font-weight: 900;
   line-height: 42px;
   text-align: center;
-  color: ${cores.pink};
+  color: ${colors.pink};
   background-color: transparent;
 
   @media (max-width: ${breakpoints.dextop}) {
@@ -42,19 +42,19 @@ export const Subtitle = styled.h2`
     width: 90%;
   }
 `
-export const HeaderContainerPerfil = styled.div<Props>`
+export const HeaderContainerProfile = styled.div<Props>`
   background-image: url(${banner_background});
   height: 164px;
   width: 100%;
   padding-top: 40px;
-  display: ${(props) => (props.size === 'perfil' ? 'flex' : 'none')};
+  display: ${(props) => (props.size === 'profile' ? 'flex' : 'none')};
 
   @media (max-width: ${breakpoints.tablet}) {
     padding-top: 16px;
     padding-bottom: 16px;
   }
 `
-export const PerfilNav = styled.div`
+export const ProfileNav = styled.div`
   width: 90%;
   max-height: 58px;
   display: flex;
@@ -70,7 +70,7 @@ export const PerfilNav = styled.div`
     font-size: 18px;
     font-weight: 900;
     line-height: 21px;
-    color: ${cores.pink};
+    color: ${colors.pink};
     background-color: transparent;
   }
 
@@ -93,7 +93,7 @@ export const PerfilNav = styled.div`
       top: 4px;
       left: 4px;
       background-color: transparent;
-      color: ${cores.pink};
+      color: ${colors.pink};
       font-size: 28px;
     }
   }
@@ -114,7 +114,7 @@ export const ShoppingContainer = styled.div`
     }
     .shop-cart {
       background-color: transparent;
-      color: ${cores.pink};
+      color: ${colors.pink};
       font-size: 28px;
     }
   }
@@ -133,7 +133,7 @@ export const ShoppingContainer = styled.div`
       span {
         display: block;
         font-size: 18px;
-        color: ${cores.pink};
+        color: ${colors.pink};
       }
     }
   }
@@ -143,7 +143,7 @@ export const RestaurantsLink = styled(Link)`
   font-size: 18px;
   font-weight: 900;
   line-height: 21px;
-  color: ${cores.pink};
+  color: ${colors.pink};
   background-color: transparent;
   text-decoration: none;
 

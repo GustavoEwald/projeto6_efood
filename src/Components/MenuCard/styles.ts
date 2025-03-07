@@ -1,12 +1,12 @@
 import styled from 'styled-components'
-import { breakpoints, cores } from '../../styles'
+import { breakpoints, colors } from '../../styles'
 
 export const MenuContainer = styled.div`
   height: 342px;
   width: 320px;
   padding: 8px;
-  background-color: ${cores.pink};
-  color: ${cores.menuText};
+  background-color: ${colors.pink};
+  color: ${colors.menuText};
 `
 export const Prato = styled.img`
   width: 100%;
@@ -30,13 +30,14 @@ export const Description = styled.p`
 export const Btn = styled.button`
   width: 100%;
   height: 24px;
-  background-color: ${cores.menuText};
-  color: ${cores.pink};
+  background-color: ${colors.menuText};
+  color: ${colors.pink};
   font-size: 14px;
   font-weight: 700;
   line-height: 16px;
   text-align: center;
   border: none;
+  cursor: pointer;
 `
 
 export const ModalContainer = styled.div`
@@ -44,11 +45,12 @@ export const ModalContainer = styled.div`
   gap: 24px;
   max-width: 1024px;
   height: 344px;
-  background-color: ${cores.pink};
+  background-color: ${colors.pink};
   position: fixed;
   top: 25vh;
   padding: 32px;
   z-index: 3;
+  cursor: pointer;
 
   @media (max-width: ${breakpoints.dextop}) {
     max-width: 90%;
@@ -84,7 +86,7 @@ export const ModalInfos = styled.div`
 
 export const ModalTitle = styled.h3`
   background-color: transparent;
-  color: ${cores.white};
+  color: ${colors.white};
   font-size: 18px;
   font-weight: 900;
   margin-bottom: 16px;
@@ -96,14 +98,14 @@ export const ModalTitle = styled.h3`
 `
 export const ModalDescription = styled.p`
   background-color: transparent;
-  color: ${cores.white};
+  color: ${colors.white};
   font-size: 14px;
   font-weight: 400;
   margin-bottom: 16px;
 `
 export const ModalBtn = styled.button`
-  background-color: ${cores.lightText};
-  color: ${cores.pink};
+  background-color: ${colors.lightText};
+  color: ${colors.pink};
   height: 24px;
   font-size: 14px;
   font-weight: 700;

@@ -1,18 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { RootReducer } from '../../store'
-import * as Yup from 'yup'
-import { open } from '../../store/reducers/cart'
-import { closeDeliveryTab } from '../../store/reducers/delivery'
-import { useState } from 'react'
-import {
-  Btn,
-  CheckoutContainer,
-  InfoContainer,
-  Overlay,
-  Sidebar
-} from './styles'
 import { useFormik } from 'formik'
+import { useEffect, useState } from 'react'
+import * as Yup from 'yup'
+import InputMask from 'react-input-mask'
+
+import { RootReducer } from '../../store'
+import { closeDeliveryTab } from '../../store/reducers/delivery'
+import { open, clear } from '../../store/reducers/cart'
 import { useOrderMutation } from '../../services/api'
+
+import * as S from './styles'
 
 export type Props = {
   flexOrientation?: 'row' | 'column'
@@ -23,20 +20,28 @@ export type DeliveryData = {
   name: string
   address: string
   city: string
-  zipCode: number
-  number: number
+  zipCode: string
+  number: string
   complement?: string
 }
 
 const Checkout = () => {
-  const [order, { isLoading, isError, data }] = useOrderMutation()
+  const [order, { data, isSuccess }] = useOrderMutation()
 
   const dispatch = useDispatch()
   const { deliveryTabisOpen } = useSelector(
     (state: RootReducer) => state.delivery
   )
+  const { items } = useSelector((state: RootReducer) => state.cart)
   const [payment, setPayment] = useState(false)
   const [delivery, setDelivery] = useState(true)
+  const [conclusion, setConclusion] = useState(false)
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(clear())
+    }
+  }, [isSuccess, dispatch])
 
   const form = useFormik({
     initialValues: {
@@ -59,12 +64,18 @@ const Checkout = () => {
       zipcode: Yup.string()
         .required('Campo obrigatorio')
         .min(8, 'O CEP deve ter 8 digitos!')
-        .max(8, 'O CEP deve ter 8 digitos!'),
+        .max(9, 'O CEP deve ter 8 digitos!'),
       addressNumber: Yup.string().required('Campo obrigatorio'),
       complement: Yup.string(),
       cardOwner: Yup.string().required('Campo obrigatorio'),
-      cardNumber: Yup.string().required('Campo obrigatorio'),
-      cvv: Yup.string().required('Campo obrigatorio'),
+      cardNumber: Yup.string()
+        .required('Campo obrigatorio')
+        .min(19, 'O número do cartão deve ter 16 digitos!')
+        .max(19, 'O número do cartão deve ter 16 digitos!'),
+      cvv: Yup.string()
+        .required('Campo obrigatorio')
+        .min(3, 'O CVV deve ter 16 digitos!')
+        .max(3, 'O CVV deve ter 16 digitos!'),
       expireMonth: Yup.string().required('Campo obrigatorio'),
       expireYear: Yup.string().required('Campo obrigatorio')
     }),
@@ -80,12 +91,10 @@ const Checkout = () => {
             complement: values.complement
           }
         },
-        products: [
-          {
-            id: 1,
-            price: 10
-          }
-        ],
+        products: items.map((item) => ({
+          id: item.id,
+          price: item.preco
+        })),
         payment: {
           card: {
             name: values.cardOwner,
@@ -108,8 +117,16 @@ const Checkout = () => {
   }
   const openConclusionTab = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault()
+    form.handleSubmit()
     setPayment(false)
     setDelivery(false)
+    setConclusion(true)
+  }
+  const closeOrder = () => {
+    dispatch(closeDeliveryTab())
+    setDelivery(true)
+    setConclusion(false)
+    form.resetForm()
   }
   const backToCart = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault()
@@ -117,27 +134,21 @@ const Checkout = () => {
     dispatch(closeDeliveryTab())
   }
 
-  const enviar = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault()
-    form.handleSubmit
-  }
-
-  const getErrorMsg = (fieldName: string, message?: string) => {
+  const inputHasError = (fieldName: string) => {
     const isTouched = fieldName in form.touched
     const isInvalid = fieldName in form.errors
-    if (isTouched && isInvalid) return message
-    return ''
+    return isTouched && isInvalid
   }
 
   return (
-    <CheckoutContainer
+    <S.CheckoutContainer
       onSubmit={form.handleSubmit}
       className={deliveryTabisOpen ? 'isOpen' : ''}
     >
-      <Sidebar>
+      <S.Sidebar>
         {delivery && (
           <>
-            <InfoContainer flexOrientation="column">
+            <S.InfoContainer flexOrientation="column">
               <h3 className="title">Entrega</h3>
               <label htmlFor="name">Quem irá receber</label>
               <input
@@ -147,8 +158,8 @@ const Checkout = () => {
                 value={form.values.name}
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
+                className={inputHasError('name') ? 'error' : ''}
               />
-              <small>{getErrorMsg('name', form.errors.name)}</small>
               <label htmlFor="address">Endereço</label>
               <input
                 id="address"
@@ -157,8 +168,8 @@ const Checkout = () => {
                 value={form.values.address}
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
+                className={inputHasError('address') ? 'error' : ''}
               />
-              <small>{getErrorMsg('address', form.errors.address)}</small>
               <label htmlFor="city">Cidade</label>
               <input
                 id="city"
@@ -167,36 +178,35 @@ const Checkout = () => {
                 value={form.values.city}
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
+                className={inputHasError('city') ? 'error' : ''}
               />
-              <small>{getErrorMsg('city', form.errors.city)}</small>
-              <InfoContainer>
-                <InfoContainer flexOrientation="column">
+              <S.InfoContainer>
+                <S.InfoContainer flexOrientation="column">
                   <label htmlFor="zipcode">CEP</label>
-                  <input
+                  <InputMask
                     id="zipcode"
-                    type="string"
+                    type="text"
                     name="zipcode"
                     value={form.values.zipcode}
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
+                    className={inputHasError('zipcode') ? 'error' : ''}
+                    mask="99999-999"
                   />
-                  <small>{getErrorMsg('zipcode', form.errors.zipcode)}</small>
-                </InfoContainer>
-                <InfoContainer flexOrientation="column">
+                </S.InfoContainer>
+                <S.InfoContainer flexOrientation="column">
                   <label htmlFor="addressNumber">Número</label>
                   <input
                     id="addressNumber"
-                    type="string"
+                    type="text"
                     name="addressNumber"
                     value={form.values.addressNumber}
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
+                    className={inputHasError('addressNumber') ? 'error' : ''}
                   />
-                  <small>
-                    {getErrorMsg('addressNumber', form.errors.addressNumber)}
-                  </small>
-                </InfoContainer>
-              </InfoContainer>
+                </S.InfoContainer>
+              </S.InfoContainer>
               <label htmlFor="complement">Complemento (opcional)</label>
               <input
                 id="complement"
@@ -205,19 +215,19 @@ const Checkout = () => {
                 value={form.values.complement}
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
+                className={inputHasError('complement') ? 'error' : ''}
               />
-              <small>{getErrorMsg('complement', form.errors.complement)}</small>
-            </InfoContainer>
-            <Btn onClick={(e) => openPaymentTab(e)} margin={true}>
+            </S.InfoContainer>
+            <S.Btn onClick={(e) => openPaymentTab(e)} margin={true}>
               Continuar com o pagamento
-            </Btn>
-            <Btn onClick={(e) => backToCart(e)}>Voltar para o carrinho</Btn>
+            </S.Btn>
+            <S.Btn onClick={(e) => backToCart(e)}>Voltar para o carrinho</S.Btn>
           </>
         )}
 
         {payment && (
           <>
-            <InfoContainer flexOrientation="column">
+            <S.InfoContainer flexOrientation="column">
               <h3 className="title">
                 Pagamento - Valor a pagar: <span>R$Valor</span>
               </h3>
@@ -229,79 +239,79 @@ const Checkout = () => {
                 value={form.values.cardOwner}
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
+                className={inputHasError('cardOwner') ? 'error' : ''}
               />
-              <small>{getErrorMsg('cardOwner', form.errors.cardOwner)}</small>
-              <InfoContainer>
-                <InfoContainer flexOrientation="column">
+              <S.InfoContainer>
+                <S.InfoContainer flexOrientation="column">
                   <label htmlFor="cardNumber">Numero do cartão</label>
-                  <input
+                  <InputMask
                     id="cardNumber"
-                    type="number"
+                    type="text"
                     name="cardNumber"
                     value={form.values.cardNumber}
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
+                    className={inputHasError('cardNumber') ? 'error' : ''}
+                    mask="9999 9999 9999 9999"
                   />
-                  <small>
-                    {getErrorMsg('cardNumber', form.errors.cardNumber)}
-                  </small>
-                </InfoContainer>
-                <InfoContainer flexOrientation="column">
+                </S.InfoContainer>
+                <S.InfoContainer flexOrientation="column">
                   <label htmlFor="cvv">CVV</label>
-                  <input
+                  <InputMask
                     id="cvv"
-                    type="number"
+                    type="text"
                     name="cvv"
                     value={form.values.cvv}
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
+                    className={inputHasError('cvv') ? 'error' : ''}
+                    mask="999"
                   />
-                  <small>{getErrorMsg('cvv', form.errors.cvv)}</small>
-                </InfoContainer>
-              </InfoContainer>
-              <InfoContainer>
-                <InfoContainer flexOrientation="column">
+                </S.InfoContainer>
+              </S.InfoContainer>
+              <S.InfoContainer>
+                <S.InfoContainer flexOrientation="column">
                   <label htmlFor="expireMonth">Mês de vencimento</label>
-                  <input
+                  <InputMask
                     id="expireMonth"
-                    type="number"
+                    type="text"
                     name="expireMonth"
                     value={form.values.expireMonth}
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
+                    className={inputHasError('expireMonth') ? 'error' : ''}
+                    mask="99"
                   />
-                  <small>
-                    {getErrorMsg('expireMonth', form.errors.expireMonth)}
-                  </small>
-                </InfoContainer>
-                <InfoContainer flexOrientation="column">
+                </S.InfoContainer>
+                <S.InfoContainer flexOrientation="column">
                   <label htmlFor="expireYear">Ano de vencimento</label>
-                  <input
+                  <InputMask
                     id="expireYear"
-                    type="number"
+                    type="text"
                     name="expireYear"
                     value={form.values.expireYear}
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
+                    className={inputHasError('expireYear') ? 'error' : ''}
+                    mask="99"
                   />
-                  <small>
-                    {getErrorMsg('expireYear', form.errors.expireYear)}
-                  </small>
-                </InfoContainer>
-              </InfoContainer>
-              <Btn onClick={(e) => openConclusionTab(e)} margin={true}>
+                </S.InfoContainer>
+              </S.InfoContainer>
+              <S.Btn onClick={(e) => openConclusionTab(e)} margin={true}>
                 Continuar com o pagamento
-              </Btn>
-              <Btn onClick={(e) => backToCart(e)}>Voltar para o carrinho</Btn>
-            </InfoContainer>
+              </S.Btn>
+              <S.Btn type="button" onClick={(e) => backToCart(e)}>
+                Voltar para o carrinho
+              </S.Btn>
+            </S.InfoContainer>
           </>
         )}
 
         <>
-          {!payment && !delivery && (
+          {conclusion && data && (
             <>
               <h3 className="title">
-                Pedido realizado - <span>ORDER_ID</span>
+                Pedido realizado - <span>{data.orderId}</span>
               </h3>
               <p>
                 Estamos felizes em informar que seu pedido já está em processo
@@ -320,15 +330,15 @@ const Checkout = () => {
                 Esperamos que desfrute de uma deliciosa e agradável experiência
                 gastronômica. Bom apetite!
               </p>
-              <Btn type="button" onClick={(e) => enviar(e)}>
+              <S.Btn onClick={closeOrder} type="submit">
                 Concluir
-              </Btn>
+              </S.Btn>
             </>
           )}
         </>
-      </Sidebar>
-      <Overlay />
-    </CheckoutContainer>
+      </S.Sidebar>
+      <S.Overlay />
+    </S.CheckoutContainer>
   )
 }
 

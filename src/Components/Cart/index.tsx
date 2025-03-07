@@ -1,18 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
+
 import { RootReducer } from '../../store'
 import { close, del } from '../../store/reducers/cart'
 import { openDeliveryTab } from '../../store/reducers/delivery'
+import PriceFormat from '../../utils'
+
 import trash from '../../Assets/Images/trash_can.png'
-import {
-  Btn,
-  CartContainer,
-  CheckoutInfo,
-  DeleteBtn,
-  OrderCard,
-  Overlay,
-  Sidebar
-} from './styles'
-import { formataPreco } from '../MenuCard'
+import * as S from './styles'
 
 const Cart = () => {
   const dispatch = useDispatch()
@@ -35,37 +29,48 @@ const Cart = () => {
   }
 
   const openDelivery = () => {
-    dispatch(openDeliveryTab())
+    if (items.length > 0) {
+      dispatch(openDeliveryTab())
+    } else {
+      alert('O carrinho está vazio!')
+    }
     closeCart()
   }
 
   return (
-    <>
-      <CartContainer className={orderTabisOpen ? 'isOpen' : ''}>
-        <Sidebar>
-          <ul>
-            {items.map((item) => (
-              <OrderCard key={item.id}>
-                <img src={item.foto} />
-                <div>
-                  <h4>{item.nome}</h4>
-                  <p>{formataPreco(item.preco)}</p>
-                </div>
-                <DeleteBtn onClick={() => deleteItem(item.id)}>
-                  <img src={trash} alt="Excluir" />
-                </DeleteBtn>
-              </OrderCard>
-            ))}
-          </ul>
-          <CheckoutInfo>
-            <p>Valor total</p>
-            <p>{formataPreco(getTotal())}</p>
-          </CheckoutInfo>
-          <Btn onClick={openDelivery}>Continuar com a entrega</Btn>
-        </Sidebar>
-        <Overlay onClick={closeCart} />
-      </CartContainer>
-    </>
+    <S.CartContainer className={orderTabisOpen ? 'isOpen' : ''}>
+      <S.Sidebar>
+        {items.length > 0 ? (
+          <>
+            <ul>
+              {items.map((item) => (
+                <S.OrderCard key={item.id}>
+                  <img src={item.foto} />
+                  <div>
+                    <h4>{item.nome}</h4>
+                    <p>{PriceFormat(item.preco)}</p>
+                  </div>
+                  <S.DeleteBtn onClick={() => deleteItem(item.id)}>
+                    <img src={trash} alt="Excluir" />
+                  </S.DeleteBtn>
+                </S.OrderCard>
+              ))}
+            </ul>
+            <S.CheckoutInfo>
+              <p>Valor total</p>
+              <p>{PriceFormat(getTotal())}</p>
+            </S.CheckoutInfo>
+            <S.Btn onClick={openDelivery}>Continuar com a entrega</S.Btn>
+          </>
+        ) : (
+          <p>
+            O carrinho está vazio, adicione um item para prosseguir com o
+            pedido.
+          </p>
+        )}
+      </S.Sidebar>
+      <S.Overlay onClick={closeCart} />
+    </S.CartContainer>
   )
 }
 

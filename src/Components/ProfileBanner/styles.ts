@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { breakpoints, cores } from '../../styles'
+import { breakpoints, colors } from '../../styles'
 import { Props } from '.'
 
 export const Banner = styled.div<Omit<Props, 'tipo' | 'titulo'>>`
@@ -37,7 +37,7 @@ export const BannerContainer = styled.div`
   }
 
   h2 {
-    color: ${cores.white};
+    color: ${colors.white};
     font-size: 32px;
     line-height: 38px;
     z-index: 2;
