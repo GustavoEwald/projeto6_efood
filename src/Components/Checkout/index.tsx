@@ -61,10 +61,7 @@ const Checkout = () => {
       name: Yup.string().required('Campo obrigatorio'),
       address: Yup.string().required('Campo obrigatorio'),
       city: Yup.string().required('Campo obrigatorio'),
-      zipcode: Yup.string()
-        .required('Campo obrigatorio')
-        .min(8, 'O CEP deve ter 8 digitos!')
-        .max(9, 'O CEP deve ter 8 digitos!'),
+      zipcode: Yup.string().required('Campo obrigatorio'),
       addressNumber: Yup.string().required('Campo obrigatorio'),
       complement: Yup.string(),
       cardOwner: Yup.string().required('Campo obrigatorio'),
@@ -110,17 +107,71 @@ const Checkout = () => {
     }
   })
 
+  const formValidation = (option: string) => {
+    form.setTouched({
+      name: true,
+      address: true,
+      city: true,
+      zipcode: true,
+      addressNumber: true,
+      complement: true,
+      cardOwner: true,
+      cardNumber: true,
+      cvv: true,
+      expireMonth: true,
+      expireYear: true
+    })
+    if (option == 'delivery') {
+      return (
+        !form.errors.name &&
+        !form.errors.address &&
+        !form.errors.city &&
+        !form.errors.zipcode &&
+        !form.errors.addressNumber &&
+        form.values.name !== '' &&
+        form.values.address !== '' &&
+        form.values.city !== '' &&
+        form.values.zipcode !== '' &&
+        !form.values.zipcode.includes('_') &&
+        form.values.addressNumber !== ''
+      )
+    } else
+      return (
+        !form.errors.cardOwner &&
+        !form.errors.cardNumber &&
+        !form.errors.cvv &&
+        !form.errors.expireMonth &&
+        !form.errors.expireYear &&
+        !form.values.cardNumber.includes('_') &&
+        !form.values.cvv.includes('_') &&
+        !form.values.expireMonth.includes('_') &&
+        !form.values.expireYear.includes('_')
+      )
+  }
+
+  const closeTab = () => {
+    if (conclusion) {
+      closeOrder()
+    } else dispatch(closeDeliveryTab())
+  }
+
   const openPaymentTab = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault()
-    setPayment(true)
-    setDelivery(false)
+    if (formValidation('delivery')) {
+      setPayment(true)
+      setDelivery(false)
+    } else {
+      alert('Preencha todos os campos para seguir com o pagamento')
+    }
   }
   const openConclusionTab = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault()
-    form.handleSubmit()
-    setPayment(false)
-    setDelivery(false)
-    setConclusion(true)
+    if (formValidation('payment')) {
+      form.handleSubmit()
+      setPayment(false)
+      setDelivery(false)
+      setConclusion(true)
+    } else alert('Preencha todos os campos para seguir com o pedido')
   }
   const closeOrder = () => {
     dispatch(closeDeliveryTab())
@@ -131,6 +182,8 @@ const Checkout = () => {
   const backToCart = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault()
     dispatch(open())
+    setPayment(false)
+    setDelivery(true)
     dispatch(closeDeliveryTab())
   }
 
@@ -190,7 +243,12 @@ const Checkout = () => {
                     value={form.values.zipcode}
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
-                    className={inputHasError('zipcode') ? 'error' : ''}
+                    className={
+                      'zipcode' in form.touched &&
+                      form.values.zipcode.includes('_')
+                        ? 'error'
+                        : ''
+                    }
                     mask="99999-999"
                   />
                 </S.InfoContainer>
@@ -337,7 +395,7 @@ const Checkout = () => {
           )}
         </>
       </S.Sidebar>
-      <S.Overlay />
+      <S.Overlay onClick={closeTab} />
     </S.CheckoutContainer>
   )
 }
